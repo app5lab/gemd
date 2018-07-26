@@ -1,0 +1,7 @@
+{
+  "name": "DGME",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
