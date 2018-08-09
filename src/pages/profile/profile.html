@@ -1,0 +1,29 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button [menuToggle]='m' style="display: unset !important;">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Dashboard</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <button ion-button full round (click)="takePhoto()">Take photo</button>
+  <img src="{{imageLoc.img}}" alt="">
+  <p>Location Coordinates: {{imageLoc.lat}},{{imageLoc.lng}}</p>
+  <p>Address: {{address}}</p>
+  <button ion-button full round (click)="view()"> View on Map</button>
+  <button (click)="getloc()" ion-button mode="ios" round>Get geolocation</button>
+  <button (click)="d()" ion-button mode="ios" round>Get for Desktop</button>
+  <div *ngIf="location">
+    <h2>Your location is:</h2>
+    <p>Lon: {{ location.longitude }}</p>
+    <p>Lat: {{ location.latitude }}</p>
+  </div>
+  <p *ngFor='let error of errors'>
+    {{error}}
+  </p>
+</ion-content>

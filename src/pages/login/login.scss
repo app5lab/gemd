@@ -1,0 +1,30 @@
+page-login {
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
+    #one.item-block .item-inner {
+        border-bottom: 0px !important;
+    }
+    .term
+  {
+    padding-top: 20px;
+  }
+
+  .terms-checkbox-label
+  {
+    overflow: visible;
+    text-overflow: initial;
+    white-space: initial;
+    opacity: 0.5;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .error-message
+  {
+    color: red;
+  }
+}
