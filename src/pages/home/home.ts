@@ -23,6 +23,6 @@ export class HomePage {
   }
 
   trip(){
-    this.navCtrl.push('TripFormPage')
+    this.navCtrl.push('TripFormPage') 
   }
 }

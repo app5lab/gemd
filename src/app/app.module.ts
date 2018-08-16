@@ -17,6 +17,7 @@ import {
 import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { DatePicker } from '@ionic-native/date-picker';
+import { HTTP } from '@ionic-native/http';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { DatePicker } from '@ionic-native/date-picker';
     MyApp,
   ],
   providers: [
+    HTTP,
     StatusBar,
     DatePicker,
     SplashScreen,

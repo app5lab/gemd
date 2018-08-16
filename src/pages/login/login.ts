@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { HTTP } from '@ionic-native/http';
 
 @IonicPage()
 @Component({
@@ -9,9 +10,15 @@ import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms'
   templateUrl: 'login.html',
 })
 export class LoginPage {
+  test:any = 'test'
   validations_form: FormGroup;
-  constructor(public formBuilder: FormBuilder,public navCtrl: NavController, public navParams: NavParams, public load: LoadingController, public alert:AlertController , private finger: AndroidFingerprintAuth) {
+  constructor(public http:HTTP,public formBuilder: FormBuilder,public navCtrl: NavController, public navParams: NavParams, public load: LoadingController, public alert:AlertController , private finger: AndroidFingerprintAuth) {
     var u = localStorage.getItem('dgme_user')
+    http.get('http://192.168.5.2:8080/API/test.php',{},{}).then( res => {
+      this.test = JSON.stringify(res.data)
+    }).catch( err => {
+      this.test = JSON.stringify(err)
+    })
     this.validations_form = this.formBuilder.group({
       username: new FormControl('', Validators.compose([
         // Validators.pattern('(([a-zA-Z0-9])+(_|-| )[a-zA-Z0-9]*)*'),
@@ -34,13 +41,12 @@ export class LoginPage {
     this.finger.isAvailable().then((result)=> {
       if(result.isAvailable){
         // it is available
-
-        this.finger.encrypt({ clientId: 'myAppName', username: 'myUsername', password: 'myPassword' })
+        // this,finger.decrypt({clientId:'DGME',token:'sdasdsad',dialogTitle:'d'})
+        this.finger.encrypt({ clientId: 'DGME', username: this.validations_form.controls.username.value, password: this.validations_form.controls.password.value })
           .then(result => {
             if (result.withFingerprint) {
               this.navCtrl.setRoot('TabsPage')
-                console.log('Successfully encrypted credentials.');
-                console.log('Encrypted credentials: ' + result.token);
+              console.log('Encrypted credentials: ' + result.token);
             } else if (result.withBackup) {
               console.log('Successfully authenticated with backup password!');
             } else console.log('Didn\'t authenticate!');
@@ -61,14 +67,18 @@ export class LoginPage {
   submit(){
       var l = this.load.create({content:'Signing In...'})
       l.present();
-      var user = {name:this.validations_form.controls.username.value,password:this.validations_form.controls.password.value}
+      var user = {name:this.validations_form.controls.username.value,password:this.validations_form.controls.password.value,role:'TO'}
       if(this.validations_form.controls.remember.value == true){
         localStorage.setItem('dgme_user',JSON.stringify(user))
       }
       else{
         localStorage.removeItem('dgme_user')
       }
-      this.navCtrl.setRoot('TabsPage').then(() => {l.dismiss()})
+      if(user.role == 'TO')
+        this.navCtrl.setRoot('ToPage').then(() => {l.dismiss()})
+      else
+        this.navCtrl.setRoot('TabsPage').then(() => {l.dismiss()})
+
   }
 
   forgot() {
